@@ -50,3 +50,4 @@ class CartItem {
     private Integer quantity;
 
 }
+
