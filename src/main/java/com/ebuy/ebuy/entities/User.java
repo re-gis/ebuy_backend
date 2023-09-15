@@ -1,9 +1,13 @@
 package com.ebuy.ebuy.entities;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = { "email" }) })
@@ -28,8 +32,8 @@ public class User {
     @Column(name = "password")
     private @NotBlank String password;
 
-    @Column(name = "isAdmin")
-    private @NotBlank boolean isAdmin;
+    @Column(name = "isAdmin", columnDefinition = "boolean default false")
+    private boolean isAdmin;
 
     public Long getId() {
         return id;
