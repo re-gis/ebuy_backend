@@ -11,8 +11,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
-
-
 @Entity
 @Table(name = "products")
 public class Product {
@@ -35,6 +33,20 @@ public class Product {
     @Column(name = "date_updated")
     private Date date_updated;
 
+    @Column(name = "imageUrl")
+    private String imageUrl;
+
+    @Column(name = "quantity")
+    private int quantity;
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public Product() {
     }
 
@@ -46,5 +58,61 @@ public class Product {
     @PreUpdate
     protected void onUpdate() {
         this.date_updated = new Date();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Date getDate_added() {
+        return date_added;
+    }
+
+    public void setDate_added(Date date_added) {
+        this.date_added = date_added;
+    }
+
+    public Date getDate_updated() {
+        return date_updated;
+    }
+
+    public void setDate_updated(Date date_updated) {
+        this.date_updated = date_updated;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

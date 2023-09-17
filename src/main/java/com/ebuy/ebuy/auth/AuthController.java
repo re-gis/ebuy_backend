@@ -1,6 +1,7 @@
 package com.ebuy.ebuy.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ebuy.ebuy.dtos.LoginRequest;
 import com.ebuy.ebuy.dtos.SignupRequest;
 import com.ebuy.ebuy.entities.User;
+import com.ebuy.ebuy.payload.ApiResponse;
 import com.ebuy.ebuy.payload.JwtResponse;
 import com.ebuy.ebuy.repository.UserRepository;
 import com.ebuy.ebuy.util.JwtUtil;
@@ -18,7 +20,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RestController
 @RequestMapping(path = "/api/v1/auth")
@@ -45,12 +46,18 @@ public class AuthController {
     }
 
     @PostMapping(path = "/signup")
-    public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<ApiResponse> registerUser(@RequestBody SignupRequest signupRequest) {
+        User user = new User();
+        if (signupRequest.getEmail() == null || signupRequest.getFirstName() == null
+                || signupRequest.getLastName() == null || signupRequest.getPassword() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(ApiResponse.fail(false, "All credentials are required!"));
+        }
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            return ResponseEntity.badRequest().body("Email already exists...");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(ApiResponse.fail(false, "Email already exists..."));
         } else {
             // Create user account
-            User user = new User();
             user.setEmail(signupRequest.getEmail());
             user.setFirstName(signupRequest.getFirstName());
             user.setLastName(signupRequest.getLastName());
@@ -58,6 +65,7 @@ public class AuthController {
             userRepository.save(user);
         }
 
-        return ResponseEntity.ok("User registered successfully...");
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success(true, "User registered successfully...", user));
     }
 }
