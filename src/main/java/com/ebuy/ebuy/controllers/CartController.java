@@ -1,14 +1,9 @@
 package com.ebuy.ebuy.controllers;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.ebuy.ebuy.entities.Cart;
 import com.ebuy.ebuy.payload.ApiResponse;
 import com.ebuy.ebuy.services.CartService;
 
@@ -16,26 +11,31 @@ import com.ebuy.ebuy.services.CartService;
 @RequestMapping("/api/v1/cart")
 public class CartController {
     private final CartService cartService;
-
+    @Autowired
     public CartController(CartService cartService) {
         this.cartService = cartService;
     }
 
-    @PostMapping("/add/{id}/{quantity}")
-    public String addItemToCart(@PathVariable("id") Long productId, @PathVariable("quantity") int quantity) {
-        return cartService.addItemToCart(productId, quantity);
+    @PostMapping("/{cartId}/add/{productId}/{quantity}")
+    public ResponseEntity<ApiResponse> addToCart(@PathVariable("cartId") Long cartId, @PathVariable Long productId,
+            @PathVariable int quantity) {
+        return cartService.addItemToCart(cartId, productId, quantity);
     }
 
-    @GetMapping
-    public ResponseEntity<ApiResponse> getCart() {
-        Cart cart = this.cartService.getCart();
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiResponse.success(true, "Cart fetched successfully...", cart));
+    @DeleteMapping("/{cartId}/remove")
+    public ResponseEntity<ApiResponse> removeItemFromCart(@PathVariable("cartId") Long cartId,
+            @PathVariable int productId) {
+        return cartService.removeItemFromCart(cartId, productId);
     }
 
-    @PostMapping("/checkout")
-    public void checkout() {
-        this.cartService.checkout();
+    @PutMapping("/{cartId}/update")
+    public ResponseEntity<ApiResponse> updateItemQuantity(@PathVariable("cartId") Long cartId,
+            @RequestParam Long productId, @RequestParam int quantity) {
+        return cartService.updateItemQuantity(cartId, productId, quantity);
     }
 
+    @GetMapping("/{cartId}/total")
+    public Double getCartTotal(@PathVariable("cartId") Long cartId) {
+        return cartService.calculateCartTotal(cartId);
+    }
 }
