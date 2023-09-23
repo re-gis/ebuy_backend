@@ -19,6 +19,16 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<CartItem> items = new ArrayList<>();
 
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    private Double totalPrice;
+
     public Long getId() {
         return id;
     }

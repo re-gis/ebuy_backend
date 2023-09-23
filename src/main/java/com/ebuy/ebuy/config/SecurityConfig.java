@@ -38,7 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/api/v1/auth/login", "/api/v1/auth/signup", "/api/v1/product/create",
-                        "/api/v1/cart/add/{id}/{quantity}", "/api/v1/quantity", "/api/v1/cart/{cartId}/add/{productId}/{quantity}")
+                        "/api/v1/cart/add/{id}/{quantity}", "/api/v1/quantity",
+                        "/api/v1/cart/{cartId}/add/{productId}/{quantity}")
                 .permitAll()
                 .anyRequest()
                 .authenticated();
