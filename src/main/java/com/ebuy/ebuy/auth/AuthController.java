@@ -66,6 +66,6 @@ public class AuthController {
         }
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.success(true, "User registered successfully...", user));
+                .body(ApiResponse.success( user));
     }
 }

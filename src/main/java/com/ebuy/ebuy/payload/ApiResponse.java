@@ -45,6 +45,14 @@ public class ApiResponse {
         this.data = data;
     }
 
+    public ApiResponse(Object data) {
+        this.data = data;
+    }
+
+    public static ApiResponse success(Object data) {
+        return new ApiResponse(data);
+    }
+
     public static ApiResponse success(Boolean success, String message, Object data) {
         return new ApiResponse(true, message, data);
     }
