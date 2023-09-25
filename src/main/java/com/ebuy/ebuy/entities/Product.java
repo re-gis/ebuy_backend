@@ -37,7 +37,7 @@ public class Product {
     private String imageUrl;
 
     @Column(name = "quantity")
-    private int quantity;
+    private Integer quantity;
 
     public int getQuantity() {
         return quantity;

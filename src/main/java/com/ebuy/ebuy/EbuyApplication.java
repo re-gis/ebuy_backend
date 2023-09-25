@@ -10,4 +10,4 @@ public class EbuyApplication {
 		SpringApplication.run(EbuyApplication.class, args);
 	}
 
-}
+}	

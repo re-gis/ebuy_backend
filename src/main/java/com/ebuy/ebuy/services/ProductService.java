@@ -12,6 +12,9 @@ import com.ebuy.ebuy.entities.Product;
 import com.ebuy.ebuy.payload.ApiResponse;
 import com.ebuy.ebuy.repository.ProductRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
@@ -38,5 +41,20 @@ public class ProductService {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(true, "Product added successfully", product));
+    }
+
+    public List<Product> getallProducts() {
+        List<Product> products = productRepository.findAll();
+        // List<Product> myProducts = new ArrayList<>();
+        // for (Product product : products) {
+        //     products.add(product);
+        // }
+        // List<CreateProductDto> productDtos = new ArrayList<>();
+        // for(Product product: products) {
+        // CreateProductDto productDto = mapToProductDto(product);
+        // productDtos.add(productDto);
+        // }
+
+        return products;
     }
 }
