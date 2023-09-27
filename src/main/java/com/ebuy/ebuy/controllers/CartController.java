@@ -1,5 +1,6 @@
 package com.ebuy.ebuy.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,12 +10,9 @@ import com.ebuy.ebuy.services.CartService;
 
 @RestController
 @RequestMapping("/api/v1/cart")
+@RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
-    @Autowired
-    public CartController(CartService cartService) {
-        this.cartService = cartService;
-    }
 
     @PostMapping("/{cartId}/add/{productId}/{quantity}")
     public ResponseEntity<ApiResponse> addToCart(@PathVariable("cartId") Long cartId, @PathVariable Long productId,

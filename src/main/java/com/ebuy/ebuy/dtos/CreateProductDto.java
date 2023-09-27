@@ -1,8 +1,17 @@
 package com.ebuy.ebuy.dtos;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class CreateProductDto {
     @NotBlank(message = "Product name is required!")
     private String productName;
@@ -19,43 +28,4 @@ public class CreateProductDto {
     @Positive(message = "Product quantity required")
     private int quantity;
 
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 }

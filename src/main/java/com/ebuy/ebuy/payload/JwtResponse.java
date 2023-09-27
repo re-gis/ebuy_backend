@@ -1,28 +1,15 @@
 package com.ebuy.ebuy.payload;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class JwtResponse {
     private String token;
-
-    public String getToken() {
-        return token;
-    }
-
-    public String message;
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public JwtResponse(String token, String message) {
-        this.token = token;
-        this.message = message;
-    }
+    private String message;
 }

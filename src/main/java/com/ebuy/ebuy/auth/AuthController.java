@@ -1,20 +1,21 @@
 package com.ebuy.ebuy.auth;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ebuy.ebuy.dtos.LoginRequest;
+import com.ebuy.ebuy.services.AuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ebuy.ebuy.dtos.LoginRequest;
 import com.ebuy.ebuy.dtos.SignupRequest;
 import com.ebuy.ebuy.entities.User;
 import com.ebuy.ebuy.payload.ApiResponse;
 import com.ebuy.ebuy.payload.JwtResponse;
 import com.ebuy.ebuy.repository.UserRepository;
-import com.ebuy.ebuy.util.JwtUtil;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,27 +23,22 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(path = "/api/v1/auth")
 public class AuthController {
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final AuthService authService;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
 
     @PostMapping(path = "/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-        User user = (User) authentication.getPrincipal();
-        String jwt = jwtUtil.generateToken(user.getEmail());
-        return ResponseEntity.ok(new JwtResponse(jwt, "Success"));
+        if(loginRequest.getEmail() == null || loginRequest.getPassword() == null) {
+            return ResponseEntity.badRequest().body("All credentials are required");
+        }
+        return ResponseEntity.ok(authService.login(loginRequest));
     }
 
     @PostMapping(path = "/signup")
