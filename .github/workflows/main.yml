@@ -29,6 +29,6 @@ jobs:
 
       - name: Docker login and push
         run: |
-          echo "${{secrets.DOCKER_PWD}}" | docker login -u ${{secrets.DOCKER_USER}} --password-stdin docker.io docker push docker.io/dregimerci/ebuy:latest
+          echo "${{secrets.DOCKER_PWD}}" | docker login -u ${{secrets.DOCKER_USER}} --password-stdin docker.io 
+          docker push docker.io/dregimerci/ebuy:latest
 
-          
