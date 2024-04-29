@@ -58,10 +58,11 @@ public class AuthController {
             user.setFirstName(signupRequest.getFirstName());
             user.setLastName(signupRequest.getLastName());
             user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+            userRepository.save(user);
         }
-        userRepository.save(user);
+
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.success( user));
+                .body(ApiResponse.success( true, "User registered successfully", user));
     }
 }
